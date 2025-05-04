@@ -13,7 +13,6 @@ class Tile(pygame.sprite.Sprite):
     def update(self, shift):
         self.rect.x += shift
 
-
 # For tiles that wont move
 class StaticTile(Tile):
     def __init__(self, size, x, y, surface):
@@ -35,7 +34,7 @@ class Crate(StaticTile):
 class AnimatedTile(Tile):
     def __init__(self, size, x, y, path):
         super().__init__(size, x, y)
-        self.frames = import_folder(path)
+        self.frames = import_folder(ASSET(*path.split('/')))
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
 

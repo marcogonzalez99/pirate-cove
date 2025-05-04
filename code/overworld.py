@@ -10,7 +10,7 @@ class Node(pygame.sprite.Sprite):
     def __init__(self, pos, status, icon_speed, path):
         super().__init__()
         # Animation for Levels
-        self.frames = import_folder(path)
+        self.frames = import_folder(ASSET('graphics', 'overworld', path))
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
         # Creating the image
