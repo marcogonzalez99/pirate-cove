@@ -1,5 +1,7 @@
 import pygame
 import sys
+
+from path import ASSET
 from settings import *
 from level import Level
 from overworld import Overworld
@@ -29,28 +31,28 @@ class Game:
         self.gold_coin_frame = 0
         self.diamond_frame = 1
         self.enemy_frame = 1
+        
         # Audio
-        self.overworld_music = pygame.mixer.Sound(
-            '../audio/main_overworld.ogg')
+        self.overworld_music = pygame.mixer.Sound(ASSET('audio', 'main_overworld.ogg'))
         self.overworld_music.set_volume(0.4)
 
-        self.game_over_music = pygame.mixer.Sound('../audio/game_over.ogg')
+        self.game_over_music = pygame.mixer.Sound(ASSET('audio', 'game_over.ogg'))
         self.game_over_music.set_volume(1)
 
-        self.main_menu_music = pygame.mixer.Sound('../audio/main.ogg')
+        self.main_menu_music = pygame.mixer.Sound(ASSET('audio', 'main.ogg'))
         self.main_menu_music.set_volume(0.5)
 
-        self.credits_music = pygame.mixer.Sound('../audio/credits.ogg')
+        self.credits_music = pygame.mixer.Sound(ASSET('audio', 'credits.ogg'))
         self.credits_music.set_volume(0.7)
 
         # self.tutorial_music = pygame.mixer.Sound('../audio/tutorial.ogg')
-        self.tutorial_music = pygame.mixer.Sound('../audio/credits.ogg')
+        self.tutorial_music = pygame.mixer.Sound(ASSET('audio', 'credits.ogg'))
         self.tutorial_music.set_volume(0.2)
 
         # Zero Health Variables
         self.zero_health_timer = 0
-        self.death_sound = pygame.mixer.Sound(
-            '../audio/effects/player_death.wav')
+        self.death_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'player_death.wav'))
+
         self.death_sound.set_volume(0.7)
         self.play_sound = True
 
@@ -62,8 +64,8 @@ class Game:
         # User interface
         self.ui = UI(screen, self.lives)
         # Game Font
-        self.game_font = pygame.font.Font('../graphics/Pixeltype.ttf', 45)
-        self.tutorial_font = pygame.font.Font('../graphics/Pixeltype.ttf', 75)
+        self.game_font = pygame.font.Font(ASSET('graphics', 'Pixeltype.ttf'), 45)
+        self.tutorial_font = pygame.font.Font(ASSET('graphics', 'Pixeltype.ttf'), 75)
 
     # Creates the current level, bringing in the ability to receate the overworld, manage health, coins, diamonds, score, lives and enemies stomped
     def create_level(self, current_level):
