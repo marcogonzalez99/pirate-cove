@@ -5,6 +5,7 @@ from level import Level
 from overworld import Overworld
 from ui import UI
 
+from debug import DebugHUD
 
 class Game:
     def __init__(self):
@@ -42,7 +43,8 @@ class Game:
         self.credits_music = pygame.mixer.Sound('../audio/credits.ogg')
         self.credits_music.set_volume(0.7)
 
-        self.tutorial_music = pygame.mixer.Sound('../audio/tutorial.ogg')
+        # self.tutorial_music = pygame.mixer.Sound('../audio/tutorial.ogg')
+        self.tutorial_music = pygame.mixer.Sound('../audio/credits.ogg')
         self.tutorial_music.set_volume(0.2)
 
         # Zero Health Variables
@@ -546,7 +548,6 @@ class Game:
             self.ui.show_coins(self.coins)
             self.ui.show_diamonds(self.diamonds)
 
-
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 screen = pygame.display.set_mode(
@@ -554,6 +555,8 @@ screen = pygame.display.set_mode(
 pygame.display.set_caption("Pirate's Cove")
 clock = pygame.time.Clock()
 game = Game()
+debug = DebugHUD()
+
 
 while True:
     for event in pygame.event.get():
@@ -563,6 +566,7 @@ while True:
     # Hide the mouse, run the whole game
     pygame.mouse.set_visible(False)
     game.run()
+    debug.draw(screen, clock, game)
 
     pygame.display.update()
     clock.tick(74)

@@ -1,9 +1,10 @@
 import pygame
+
+from path import ASSET
 from game_data import levels
 from support import import_folder
 from decoration import Sky
 from settings import *
-
 
 class Node(pygame.sprite.Sprite):
     def __init__(self, pos, status, icon_speed, path):
@@ -47,8 +48,8 @@ class Icon(pygame.sprite.Sprite):
         super().__init__()
         self.pos = pos
         # Actual Hat Image
-        self.image = pygame.image.load(
-            '../graphics/overworld/hat.png').convert_alpha()
+        self.image = pygame.image.load(ASSET('graphics', 'overworld', 'hat.png')).convert_alpha()
+
         self.rect = self.image.get_rect(center=pos)
 
     def update(self):
@@ -84,25 +85,15 @@ class Overworld():
         self.allow_input = False
         self.time_length = 800
         # World Images
-        self.world_1 = pygame.image.load(
-            "../graphics/overworld/World_1.png").convert_alpha()
-        self.world_1_rect = self.world_1.get_rect(
-            center=(200, 225))
-
-        self.world_2 = pygame.image.load(
-            "../graphics/overworld/World_2.png").convert_alpha()
-        self.world_2_rect = self.world_2.get_rect(
-            center=(1700, 525))
-
-        self.world_3 = pygame.image.load(
-            "../graphics/overworld/World_3.png").convert_alpha()
-        self.world_3_rect = self.world_3.get_rect(
-            center=(200, 830))
-
-        self.world_4 = pygame.image.load(
-            "../graphics/overworld/World_4.png").convert_alpha()
-        self.world_4_rect = self.world_4.get_rect(
-            center=(1550, 925))
+        self.world_1 = pygame.image.load(ASSET('graphics', 'overworld', 'World_1.png')).convert_alpha()
+        self.world_2 = pygame.image.load(ASSET('graphics', 'overworld', 'World_2.png')).convert_alpha()
+        self.world_3 = pygame.image.load(ASSET('graphics', 'overworld', 'World_3.png')).convert_alpha()
+        self.world_4 = pygame.image.load(ASSET('graphics', 'overworld', 'World_4.png')).convert_alpha()
+        
+        self.world_1_rect = self.world_1.get_rect(center=(200, 225))
+        self.world_2_rect = self.world_2.get_rect(center=(1700, 525))
+        self.world_3_rect = self.world_3.get_rect(center=(200, 830))
+        self.world_4_rect = self.world_4.get_rect(center=(1550, 925))
 
     def setup_stages(self):
         # Each individual level nodes

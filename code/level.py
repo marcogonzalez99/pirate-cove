@@ -1,4 +1,7 @@
 import pygame
+
+from performance import PerfMonitor
+from path import ASSET
 from support import import_csv_layout, import_cut_graphics
 from settings import tile_size, screen_height, screen_width, screen
 from tiles import Tile, StaticTile, Crate, AnimatedTile, Coin, Palm, Diamond
@@ -41,15 +44,14 @@ class Level:
         self.explosion_sprite = pygame.sprite.Group()
 
         # Sound Effects
-        self.coin_sound = pygame.mixer.Sound('../audio/effects/coin.wav')
+        self.coin_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'coin.wav'))
+        self.stomp_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'stomp.wav'))
+        self.death_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'player_death.wav'))
+        self.level_clear_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'level_clear.wav'))
+        # Audio
         self.coin_sound.set_volume(0.1)
-        self.stomp_sound = pygame.mixer.Sound('../audio/effects/stomp.wav')
         self.stomp_sound.set_volume(0.3)
-        self.death_sound = pygame.mixer.Sound(
-            '../audio/effects/player_death.wav')
         self.death_sound.set_volume(0.7)
-        self.level_clear_sound = pygame.mixer.Sound(
-            '../audio/effects/level_clear.wav')
         self.level_clear_sound.set_volume(0.15)
 
         # Death Timer
@@ -147,53 +149,55 @@ class Level:
 
                     # Terrain Manager
                     if type == 'terrain':
-                        terrain_tile_list = import_cut_graphics(
-                            "../graphics/terrain/terrain_tiles.png")
+                        terrain_tile_list = import_cut_graphics(ASSET('graphics', 'terrain', 'terrain_tiles.png'))
                         tile_surface = (terrain_tile_list[int(val)])
                         sprite = StaticTile(tile_size, x, y, tile_surface)
+                        
                     if type == 'sand_terrain':
-                        terrain_tile_list = import_cut_graphics(
-                            "../graphics/terrain/rock_sand_tiles.png")
+                        terrain_tile_list = import_cut_graphics(ASSET('graphics', 'terrain', 'rock_sand_tiles.png'))
                         tile_surface = (terrain_tile_list[int(val)])
                         sprite = StaticTile(tile_size, x, y, tile_surface)
+                        
                     if type == 'soft_terrain':
-                        terrain_tile_list = import_cut_graphics(
-                            "../graphics/terrain/soft_sand_tiles.png")
+                        terrain_tile_list = import_cut_graphics(ASSET('graphics', 'terrain', 'soft_sand_tiles.png'))
                         tile_surface = (terrain_tile_list[int(val)])
                         sprite = StaticTile(tile_size, x, y, tile_surface)
+                        
                     # Grass Manager
                     if type == 'grass':
-                        grass_tile_list = import_cut_graphics(
-                            "../graphics/decoration/grass/grass.png")
+                        grass_tile_list = import_cut_graphics(ASSET('graphics', 'decoration', 'grass', 'grass.png'))
                         tile_surface = grass_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
+                        
                     # Crate Manager
                     if type == 'crates':
                         sprite = Crate(tile_size, x, y)
+                        
                     # Coin Manager
                     if type == 'coins':
                         if val == '0':
-                            sprite = Coin(tile_size, x, y,
-                                          '../graphics/coins/gold', 5)
+                            sprite = Coin(tile_size, x, y, ASSET('graphics', 'coins', 'gold'), 5)
+
                         if val == '1':
-                            sprite = Coin(tile_size, x, y,
-                                          '../graphics/coins/silver', 1)
+                            sprite = Coin(tile_size, x, y, ASSET('graphics', 'coins', 'silver'), 1)
+
                     # Diamond Manager
                     if type == 'diamond':
                         if val == '0':
-                            sprite = Diamond(
-                                tile_size, x, y, '../graphics/coins/diamond', 1)
+                            sprite = Diamond(tile_size, x, y, ASSET('graphics', 'coins', 'diamond'), 1)
+
+                            
                     # Palm Tree Manager
                     if type == 'fg palms':
                         if val == '0':
-                            sprite = Palm(tile_size, x, y,
-                                          '../graphics/terrain/palm_small', 38)
+                            sprite = Palm(tile_size, x, y, ASSET('graphics', 'terrain', 'palm_small'), 38)
+
                         if val == '1':
-                            sprite = Palm(tile_size, x, y,
-                                          '../graphics/terrain/palm_large', 70)
+                            sprite = Palm(tile_size, x, y, ASSET('graphics', 'terrain', 'palm_large'), 70)
+
                     if type == 'bg palms':
-                        sprite = Palm(tile_size, x, y,
-                                      '../graphics/terrain/palm_bg', 62)
+                        sprite = Palm(tile_size, x, y, ASSET('graphics', 'terrain', 'palm_bg'), 62)
+
                     # Enemy Manager
                     if type == 'enemies':
                         sprite = Enemy(tile_size, x, y)
@@ -215,8 +219,7 @@ class Level:
                     self.player.add(self.player_sprite)
                 # Where to spawn the end goal
                 if val == '1':
-                    hat_surface = pygame.image.load(
-                        "../graphics/character/hat.png").convert_alpha()
+                    hat_surface = pygame.image.load(ASSET('graphics', 'character', 'hat.png')).convert_alpha()
                     self.hat_sprite = StaticTile(tile_size, x, y, hat_surface)
                     self.goal.add(self.hat_sprite)
 
@@ -270,7 +273,10 @@ class Level:
                     player.direction.y = 0
                     player.on_ceiling = True
 
-        if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
+        player_rect = player.collision_rect
+        offset_rect = player_rect.move(0, 1)
+
+        if not any(sprite.rect.colliderect(offset_rect) for sprite in collidable_sprites):
             player.on_ground = False
 
     # Scrolling the map when the player reaches the limits
@@ -401,11 +407,11 @@ class Level:
 
     def draw_arrow(self):
         if self.player.sprite.rect.bottom < 0:
-            arrow_drawing = pygame.image.load(
-                "../graphics/overworld/arrow.png").convert_alpha()
+            arrow_drawing = pygame.image.load(ASSET('graphics', 'overworld', 'arrow.png')).convert_alpha()
+
             arrow_rect = arrow_drawing.get_rect(
                 center=(self.player_sprite.rect.centerx, 15))
-            screen.blit(arrow_drawing, arrow_rect)
+            self.display_surface.blit(arrow_drawing, arrow_rect)
 
     def exit_level(self):
         # Check for if the Escape key is hit, if it is, remake the overworld, without making a new level avaialable
@@ -424,66 +430,68 @@ class Level:
             self.create_overworld(self.current_level, self.new_max_level)
 
     def run(self):
-        # Run the whole game
-        # Decoration
+        perf = PerfMonitor()
+
         self.sky.draw(self.display_surface)
         self.clouds.draw(self.display_surface, self.world_shift)
-        # BG Palms
+        perf.mark("BG Draw")
+
         self.bg_palm_sprites.update(self.world_shift)
         self.bg_palm_sprites.draw(self.display_surface)
-        # Dust Particles
-        self.dust_sprite.update(self.world_shift)
-        self.dust_sprite.draw(self.display_surface)
-        # Terrain
-        self.terrain_sprites.draw(self.display_surface)
+        perf.mark("BG Palms")
+
         self.terrain_sprites.update(self.world_shift)
-        # Enemy
+        self.terrain_sprites.draw(self.display_surface)
+        perf.mark("Terrain")
+
         self.enemies_sprites.update(self.world_shift)
         self.enemies_sprites.draw(self.display_surface)
         self.constraint_sprites.update(self.world_shift)
         self.enemy_collision_reverse()
-        self.explosion_sprite.update(self.world_shift)
-        self.explosion_sprite.draw(self.display_surface)
-        # Crate
-        self.crates_sprites.draw(self.display_surface)
+        perf.mark("Enemies + Reverse")
+
         self.crates_sprites.update(self.world_shift)
-        # Grass
-        self.grass_sprites.draw(self.display_surface)
+        self.crates_sprites.draw(self.display_surface)
         self.grass_sprites.update(self.world_shift)
-        # Coins
+        self.grass_sprites.draw(self.display_surface)
+        perf.mark("Crates + Grass")
+
         self.coin_sprites.update(self.world_shift)
         self.coin_sprites.draw(self.display_surface)
-        # Diamonds
         self.diamond_sprites.update(self.world_shift)
         self.diamond_sprites.draw(self.display_surface)
-        # FG Palms
+        perf.mark("Coins + Diamonds")
+
         self.fg_palm_sprites.update(self.world_shift)
         self.fg_palm_sprites.draw(self.display_surface)
+        perf.mark("FG Palms")
 
-        # Player Sprite
         self.player.update()
-        self.horizontal_movement_collision()
+        self.player.draw(self.display_surface)
+        perf.mark("Player")
 
         self.get_player_on_ground()
+        self.horizontal_movement_collision()
         self.vertical_movement_collision()
         self.create_landing_dust()
-
-        self.player.draw(self.display_surface)
         self.scroll_x()
-        self.draw_arrow()
-        # Player Goal
-        self.goal.update(self.world_shift)
-        self.goal.draw(self.display_surface)
-
-        # Overworld Checks
         self.check_death()
         self.check_win()
         self.exit_level()
         self.skip_level()
-
-        # Coins
         self.check_coin_collisions()
         self.check_diamond_collisions()
         self.check_enemy_collisions()
-        # Water
+        perf.mark("Logic & Collisions")
+
+        self.goal.update(self.world_shift)
+        self.goal.draw(self.display_surface)
         self.water.draw(self.display_surface, self.world_shift)
+        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.draw(self.display_surface)
+        self.explosion_sprite.update(self.world_shift)
+        self.explosion_sprite.draw(self.display_surface)
+        self.draw_arrow()
+        perf.mark("Goal, Water, FX")
+
+        perf.report()

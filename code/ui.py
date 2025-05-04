@@ -1,4 +1,5 @@
 import pygame
+from path import ASSET
 
 
 class UI:
@@ -8,7 +9,9 @@ class UI:
 
         # Health
         self.health_bar = pygame.image.load(
-            '../graphics/ui/health_bar.png').convert_alpha()
+            ASSET('graphics', 'ui', 'health_bar.png')
+        ).convert_alpha()
+
         self.health_bar_topleft = (54, 39)
         self.bar_max_width = 152
         self.bar_height = 4
@@ -16,19 +19,25 @@ class UI:
         # Lives
         self.lives = lives
         self.life_surface = pygame.image.load(
-            "../graphics/character/hat.png").convert_alpha()
+            ASSET('graphics', 'character', 'hat.png')
+        ).convert_alpha()
+
         self.life_x_start_pos = 350 - \
             (self.life_surface.get_size()[0] * 2 + 20)
 
         # Coins
         self.coin = pygame.image.load(
-            '../graphics/ui/coin.png').convert_alpha()
+            ASSET('graphics', 'ui', 'coin.png')
+        ).convert_alpha()
+
         self.coin_rect = self.coin.get_rect(topleft=(50, 60))
-        self.font = pygame.font.Font('../graphics/ui/ARCADEPI.ttf', 32)
+        self.font = pygame.font.Font(ASSET('graphics', 'ui', 'ARCADEPI.ttf'), 32)
 
         # Diamonds
         self.diamond = pygame.image.load(
-            '../graphics/coins/diamond.png').convert_alpha()
+            ASSET('graphics', 'coins', 'diamond.png')
+        ).convert_alpha()
+
         self.diamond_rect = self.diamond.get_rect(topleft=(50, 75))
 
     # How the health is displayed, a full bar and a bar that can be emptied

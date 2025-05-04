@@ -1,12 +1,15 @@
-from csv import reader
-from settings import tile_size
 import pygame
+import os
+
+from csv import reader
 from os import walk
+from path import ASSET
+from settings import tile_size
 
 
 def import_csv_layout(path):
     terrain_map = []
-    with open(path) as map:
+    with open(ASSET(*path.split('/'))) as map:
         level = reader(map, delimiter=',')
         for row in level:
             terrain_map.append(list(row))
@@ -14,7 +17,7 @@ def import_csv_layout(path):
 
 
 def import_cut_graphics(path):
-    surface = pygame.image.load(path).convert_alpha()
+    surface = pygame.image.load(ASSET(*path.split('/'))).convert_alpha()
     tile_num_x = int(surface.get_size()[0] / tile_size)
     tile_num_y = int(surface.get_size()[1] / tile_size)
 
@@ -34,9 +37,11 @@ def import_cut_graphics(path):
 def import_folder(path):
     surface_list = []
 
-    for _, __, image_files in walk(path):
+    folder = ASSET(*path.split('/'))
+    for _, __, image_files in walk(folder):
+
         for image in image_files:
-            full_path = path + "/" + image
+            full_path = os.path.join(folder, image)
             image_surface = pygame.image.load(full_path).convert_alpha()
             surface_list.append(image_surface)
     return surface_list

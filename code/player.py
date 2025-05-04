@@ -1,4 +1,7 @@
 import pygame
+import os
+
+from path import ASSET
 from support import import_folder
 from math import sin
 
@@ -44,24 +47,25 @@ class Player(pygame.sprite.Sprite):
         self.hurt_time = 0
 
         # Audio
-        self.jump_sound = pygame.mixer.Sound('../audio/effects/jump.ogg')
+        # self.jump_sound = pygame.mixer.Sound('../audio/effects/jump.ogg')
+        self.jump_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'hit.wav'))
+        self.hit_sound = pygame.mixer.Sound(ASSET('audio', 'effects', 'hit.wav'))
+
         self.jump_sound.set_volume(0.25)
-        self.hit_sound = pygame.mixer.Sound('../audio/effects/hit.wav')
         self.hit_sound.set_volume(0.2)
 
     def import_character_assets(self):
         # Import the graphics for the player
-        character_path = '../graphics/character/'
+        character_path = ASSET('graphics', 'character')
         self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
 
         for animation in self.animations.keys():  # Get access to folders
-            full_path = character_path + animation
+            full_path = os.path.join(character_path, animation)
             self.animations[animation] = import_folder(full_path)
 
     def import_dust_run_particles(self):
         # Import dust particles for the player
-        self.dust_run_particles = import_folder(
-            '../graphics/character/dust_particles/run')
+        self.dust_run_particles = import_folder('graphics/character/dust_particles/run')
 
     def run_dust_animation(self):
         if self.status == 'run' and self.on_ground:
