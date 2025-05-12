@@ -56,16 +56,16 @@ class Player(pygame.sprite.Sprite):
 
     def import_character_assets(self):
         # Import the graphics for the player
-        character_path = ASSET('graphics', 'character')
         self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
 
-        for animation in self.animations.keys():  # Get access to folders
-            full_path = os.path.join(character_path, animation)
+        for animation in self.animations.keys():
+            full_path = ASSET('graphics', 'character', animation)
             self.animations[animation] = import_folder(full_path)
+
 
     def import_dust_run_particles(self):
         # Import dust particles for the player
-        self.dust_run_particles = import_folder('graphics/character/dust_particles/run')
+        self.dust_run_particles = import_folder(ASSET('graphics', 'character', 'dust_particles', 'run'))
 
     def run_dust_animation(self):
         if self.status == 'run' and self.on_ground:

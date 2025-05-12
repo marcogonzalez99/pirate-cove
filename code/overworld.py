@@ -10,9 +10,14 @@ class Node(pygame.sprite.Sprite):
     def __init__(self, pos, status, icon_speed, path):
         super().__init__()
         # Animation for Levels
-        self.frames = import_folder(ASSET('graphics', 'overworld', path))
+        self.frames = import_folder(path)  # No ASSET
+
+        if not self.frames:
+            print(f"[Node ERROR] No frames found at path: {ASSET('graphics', 'overworld', path)}")
+            self.frames = [pygame.Surface((64, 64))]  # fallback blank image
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
+
         # Creating the image
         if status == 'available':
             self.status = 'available'
@@ -41,8 +46,6 @@ class Node(pygame.sprite.Sprite):
             self.image.blit(tint_surface, (0, 0))
 
 # Icon of the hat, which navigates the level select screen
-
-
 class Icon(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
@@ -54,7 +57,6 @@ class Icon(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.center = self.pos
-
 
 class Overworld():
     def __init__(self, start_level, max_level, surface, create_level):

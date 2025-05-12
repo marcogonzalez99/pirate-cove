@@ -54,7 +54,7 @@ class Sky:
         # Setting the sky for the overworld, randomly placing palm trees and clouds around
         if self.style == 'overworld':
             if self.world == 0:
-                palm_surface = import_folder('graphics/overworld/palms/world_1')
+                palm_surface = import_folder(ASSET('graphics', 'overworld', 'palms', 'world_1'))
                 self.palms = []
 
                 for surface in [choice(palm_surface) for image in range(10)]:
@@ -63,7 +63,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.palms.append((surface, rect))
 
-                clouds_surface = import_folder('graphics/overworld/clouds/world_1')
+                clouds_surface = import_folder(ASSET('graphics', 'overworld', 'clouds', 'world_1'))
                 self.clouds = []
 
                 for surface in [choice(clouds_surface) for image in range(15)]:
@@ -72,7 +72,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.clouds.append((surface, rect))
             if self.world == 1:
-                palm_surface = import_folder('graphics/overworld/palms/world_2')
+                palm_surface = import_folder(ASSET('graphics', 'overworld', 'palms', 'world_2'))
                 self.palms = []
 
                 for surface in [choice(palm_surface) for image in range(10)]:
@@ -81,7 +81,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.palms.append((surface, rect))
 
-                clouds_surface = import_folder('graphics/overworld/clouds/world_2')
+                    clouds_surface = import_folder(ASSET('graphics', 'overworld', 'clouds', 'world_2'))
                 self.clouds = []
 
                 for surface in [choice(clouds_surface) for image in range(15)]:
@@ -90,7 +90,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.clouds.append((surface, rect))
             if self.world == 2:
-                palm_surface = import_folder('graphics/overworld/palms/world_3')
+                palm_surface = import_folder(ASSET('graphics', 'overworld', 'palms', 'world_3'))
                 self.palms = []
 
                 for surface in [choice(palm_surface) for image in range(10)]:
@@ -99,7 +99,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.palms.append((surface, rect))
 
-                clouds_surface = import_folder('graphics/overworld/clouds/world_3')
+                clouds_surface = import_folder(ASSET('graphics', 'overworld', 'clouds', 'world_3'))
                 self.clouds = []
 
                 for surface in [choice(clouds_surface) for image in range(15)]:
@@ -108,7 +108,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.clouds.append((surface, rect))
             if self.world == 3:
-                palm_surface = import_folder('graphics/overworld/palms/world_x')
+                palm_surface = import_folder(ASSET('graphics', 'overworld', 'palms', 'world_x'))
                 self.palms = []
 
                 for surface in [choice(palm_surface) for image in range(10)]:
@@ -117,7 +117,7 @@ class Sky:
                     rect = surface.get_rect(midbottom=(x, y))
                     self.palms.append((surface, rect))
 
-                clouds_surface = import_folder('graphics/overworld/clouds/world_x')
+                clouds_surface = import_folder(ASSET('graphics', 'overworld', 'clouds', 'world_x'))
                 self.clouds = []
 
                 for surface in [choice(clouds_surface) for image in range(10)]:
@@ -157,7 +157,7 @@ class Water:
         for tile in range(tile_x_amount):
             x = tile * water_tile_width + water_start
             y = top
-            sprite = AnimatedTile(192, x, y, 'graphics/decoration/water')
+            sprite = AnimatedTile(192, x, y, ASSET('graphics', 'decoration', 'water'))
             self.water_sprites.add(sprite)
 
     def draw(self, surface, shift):
@@ -166,7 +166,7 @@ class Water:
 
 class Clouds:
     def __init__(self, horizon, level_width, cloud_number):
-        cloud_surface_list = import_folder('graphics/decoration/clouds')
+        cloud_surface_list = import_folder(ASSET('graphics', 'decoration', 'clouds'))
         min_x = -screen_width
         max_x = level_width + screen_width
         min_y = 0

@@ -1,4 +1,6 @@
-import os
+from pathlib import Path
 
-BASE_DIR = os.path.dirname(__file__)
-ASSET = lambda *parts: os.path.join(BASE_DIR, "..", *parts)
+BASE_DIR = Path(__file__).resolve().parent.parent  # points to pirate-cove/
+
+def ASSET(*path_parts):
+    return str(BASE_DIR.joinpath(*path_parts))

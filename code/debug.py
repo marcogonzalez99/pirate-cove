@@ -4,7 +4,6 @@ import os
 
 DEBUG_PERF = False  # 🔁 Toggle ON/OFF here
 
-
 class DebugHUD:
     def __init__(self):
         self.font = pygame.font.SysFont(None, 24)

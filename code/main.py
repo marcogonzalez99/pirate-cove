@@ -219,21 +219,21 @@ class Game:
     def game_over(self):
         # Display all the game over assets
         bg = pygame.image.load(
-            '../graphics/overworld/main_menu.png').convert_alpha()
+            ASSET('graphics', 'overworld', 'main_menu.png')).convert_alpha()
         screen.blit(bg, (0, 0))
 
         game_over_photo_1 = pygame.image.load(
-            '../graphics/overworld/game_over_1.png').convert_alpha()
+            ASSET('graphics', 'overworld', 'game_over_1.png')).convert_alpha()
 
         game_over_photo_2 = pygame.image.load(
-            '../graphics/overworld/game_over_2.png').convert_alpha()
+            ASSET('graphics', 'overworld', 'game_over_2.png')).convert_alpha()
 
         game_over_1_rect = game_over_photo_1.get_rect(
-            center=(screen_width/2, screen_height/2 - 75))
+            center=(screen_width / 2, screen_height / 2 - 75))
         screen.blit(game_over_photo_1, game_over_1_rect)
 
         game_over_2_rect = game_over_photo_2.get_rect(
-            center=(screen_width/2, screen_height/2 + 100))
+            center=(screen_width / 2, screen_height / 2 + 100))
         screen.blit(game_over_photo_2, game_over_2_rect)
 
         # Restart the game when the player gets a game over
@@ -242,27 +242,19 @@ class Game:
             self.game_over_music.stop()
             self.restart_game()
 
-    # Main Menu state
     def main_menu(self):
-        bg = pygame.image.load(
-            '../graphics/overworld/main_menu.png').convert_alpha()
+        bg = pygame.image.load(ASSET('graphics', 'overworld', 'main_menu.png')).convert_alpha()
         screen.blit(bg, (0, 0))
 
-        intro_photo_1 = pygame.image.load(
-            '../graphics/overworld/main_menu_1.png').convert_alpha()
+        intro_photo_1 = pygame.image.load(ASSET('graphics', 'overworld', 'main_menu_1.png')).convert_alpha()
+        intro_photo_2 = pygame.image.load(ASSET('graphics', 'overworld', 'main_menu_2.png')).convert_alpha()
 
-        intro_photo_2 = pygame.image.load(
-            '../graphics/overworld/main_menu_2.png').convert_alpha()
-
-        intro_1_rect = intro_photo_1.get_rect(
-            center=(screen_width/2, screen_height/2 - 75))
+        intro_1_rect = intro_photo_1.get_rect(center=(screen_width / 2, screen_height / 2 - 75))
         screen.blit(intro_photo_1, intro_1_rect)
 
-        intro_2_rect = intro_photo_2.get_rect(
-            center=(screen_width/2, screen_height/2 + 125))
+        intro_2_rect = intro_photo_2.get_rect(center=(screen_width / 2, screen_height / 2 + 125))
         screen.blit(intro_photo_2, intro_2_rect)
 
-        # Launch the tutorial from the main menu
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE] and self.can_press:
             self.main_menu_music.stop()
@@ -309,8 +301,7 @@ class Game:
             center=(screen_width/4, 200))
         screen.blit(move_text, move_text_rect)
         # Move Image
-        move_image = pygame.image.load(
-            f'../graphics/character/run/{int(self.run_frame)}.png')
+        move_image = pygame.image.load(ASSET('graphics', 'character', 'run', f'{int(self.run_frame)}.png'))
         move_image_rect = move_image.get_rect(
             center=(screen_width/4, 275))
         screen.blit(move_image, move_image_rect)
@@ -322,8 +313,7 @@ class Game:
             center=(screen_width - screen_width/4, 200))
         screen.blit(jump_text, jump_text_rect)
         # Jump Image
-        jump_image = pygame.image.load(
-            f'../graphics/character/jump/{int(self.jump_frame)}.png')
+        jump_image = pygame.image.load(ASSET('graphics', 'character', 'jump', f'{int(self.jump_frame)}.png'))
         jump_image_rect = jump_image.get_rect(
             center=(screen_width - screen_width/4, 275))
         screen.blit(jump_image, jump_image_rect)
@@ -335,16 +325,16 @@ class Game:
             center=(screen_width/4, 400))
         screen.blit(coin_tut_text, coin_tut_text_rect)
         # Coin Image
-        coin_image = pygame.image.load(
-            f'../graphics/coins/silver/{int(self.silver_coin_frame)}.png')
+        coin_image = pygame.image.load(ASSET('graphics', 'coins', 'silver', f'{int(self.silver_coin_frame)}.png'))
         coin_image_rect = coin_image.get_rect(
             center=(screen_width/4 + 100, 475))
         screen.blit(coin_image, coin_image_rect)
-        coin_2_image = pygame.image.load(
-            f'../graphics/coins/gold/{int(self.gold_coin_frame)}.png')
+        
+        coin_2_image = pygame.image.load(ASSET('graphics', 'coins', 'gold', f'{int(self.gold_coin_frame)}.png'))
         coin_2_image_rect = coin_2_image.get_rect(
             center=(screen_width/4 - 100, 475))
         screen.blit(coin_2_image, coin_2_image_rect)
+        
         # Coin Value Texts
         silver_value_text = self.game_font.render(
             "+200 Points", False, 'white')
@@ -364,11 +354,11 @@ class Game:
             center=(screen_width - screen_width/4, 400))
         screen.blit(diamond_tut_text, diamond_tut_text_rect)
         # Diamond Image
-        diamond_image = pygame.image.load(
-            f'../graphics/coins/diamond/{int(self.diamond_frame)}.png')
+        diamond_image = pygame.image.load(ASSET('graphics', 'coins', 'diamond', f'{int(self.diamond_frame)}.png'))
         diamond_image_rect = diamond_image.get_rect(
             center=(screen_width - screen_width/4, 475))
         screen.blit(diamond_image, diamond_image_rect)
+        
         # Diamond Value Text
         diamond_value_text = self.game_font.render(
             "+5000 Points ", False, 'white')
@@ -383,10 +373,11 @@ class Game:
             center=(screen_width/4, 600))
         screen.blit(hat_text, hat_text_rect)
         # Hat Image
-        hat_image = pygame.image.load('../graphics/overworld/hat.png')
+        hat_image = pygame.image.load(ASSET('graphics', 'overworld', 'hat.png'))
         hat_image_rect = hat_image.get_rect(
             center=(screen_width/4, 675))
         screen.blit(hat_image, hat_image_rect)
+        
         # Hat Value Text
         hat_value_text = self.game_font.render(
             "+10000 Points ", False, 'white')
@@ -407,12 +398,13 @@ class Game:
         enemy_text_rect = enemy_text.get_rect(
             center=(screen_width - screen_width/4, 600))
         screen.blit(enemy_text, enemy_text_rect)
+        
         # Enemy Image
-        enemy_image = pygame.image.load(
-            f'../graphics/enemy/run/{int(self.enemy_frame)}.png')
+        enemy_image = pygame.image.load(ASSET('graphics', 'enemy', 'run', f'{int(self.enemy_frame)}.png'))
         enemy_image_rect = enemy_image.get_rect(
             center=(screen_width - screen_width/4, 675))
         screen.blit(enemy_image, enemy_image_rect)
+        
         # Enemy Value Text
         enemy_value_text = self.game_font.render(
             "+1000 Points ", False, 'white')
